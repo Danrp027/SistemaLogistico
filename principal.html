@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Freeman&display=swap" rel="stylesheet">
+  <title>Unidade Logistica</title>
+
+  <style>
+    html,
+    body {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      background-color: #d8e6ed;
+      font-family: "Freeman", sans-serif;
+      flex-wrap: wrap;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+    }
+
+    #pesquisa {
+      background-color: white;
+      border-radius: 3px;
+      border: 0px solid;
+      width: 300px;
+      height: 24px;
+    }
+
+    #cabecalho {
+      width: 300px;
+      height: 300px;
+    }
+
+    #logo {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+      width: 300px;
+
+    }
+
+    #pes {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      width: 450px;
+      height: 590px;
+      background-color: #126297;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #cadastro {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 450px;
+      height: 590px;
+      background-color: #f5000c;
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #movimento {
+      display: flex;
+      align-content: center;
+      flex-direction: row;
+      justify-content: space-evenly;
+      margin-bottom: 30px;
+    }
+
+    .button {
+      background-color: white;
+      font-family: "Freeman", sans-serif;
+      border-radius: 3px;
+      border: 0px solid;
+      width: 85px;
+      height: 45px;
+    }
+
+
+    #referencia {
+      background-color: white;
+      border-radius: 3px;
+      border: 0px solid;
+      width: 300px;
+      height: 24px;
+
+    }
+
+    #amarracao {
+      background-color: white;
+      border-radius: 3px;
+      border: 0px solid;
+      width: 300px;
+      height: 24px;
+    }
+
+    #camadas {
+      background-color: white;
+      border-radius: 3px;
+      border: 0px solid;
+      width: 300px;
+      height: 24px;
+    }
+
+    input {
+      padding: 3px;
+      font-size: 15px;
+    }
+
+    #layout {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+    }
+
+    a{
+      margin-top: 15px;
+      transform: color white;
+    }
+
+  </style>
+
+  <script>
+
+
+
+
+
+
+    function Enviar() {
+
+      const formData = new FormData();
+
+      formData.append("referencia", document.getElementById("referencia").value);
+      formData.append("amarracao", document.getElementById("amarracao").value);
+      formData.append("camadas", document.getElementById("camadas").value);
+      formData.append("foto", document.getElementById("foto").files[0]);
+
+
+      fetch('/addproduto', {
+
+        method: 'POST',
+        body: formData
+      })
+
+        .then(response => response.text())
+        .then(resposta => {
+          alert(resposta);
+        })
+
+        .catch(err => {
+          console.log(err)
+
+          alert('Erro ao Enviar Dados!')
+        })
+    }
+
+
+    function Consultar() {
+      var x = document.getElementById('pesquisa').value;
+
+      fetch("/consultar/" + x)
+        .then(response => response.json())
+        .then(resposta => {
+          const imgElement = document.getElementById('imagemProduto');
+          const mensagemElement = document.getElementById('mensagemProduto');
+          const modal = document.getElementById('modal');
+          const closeModal = document.getElementById('close');
+
+          if (!resposta || resposta.length === 0) {
+            alert('Produto não cadastrado.');
+            imgElement.style.display = 'none';
+            return;
+          } else {
+            const produto = resposta[0];
+
+
+            alert(`Amarração: ${produto.AMARRACAO}\nCamadas: ${produto.CAMADAS}`);
+
+
+            imgElement.src = produto.FOTO;
+            imgElement.style.display = 'block';
+            mensagemElement.textContent = produto.nome;
+
+
+            modal.style.display = 'block';
+
+
+            closeModal.onclick = function () {
+              modal.style.display = 'none';
+            }
+
+
+            window.onclick = function (event) {
+              if (event.target == modal) {
+                modal.style.display = 'none';
+              }
+            }
+          }
+        })
+        .catch(error => {
+          console.error('Erro:', error);
+          alert('Produto não encontrado.');
+        });
+    }
+
+
+
+
+
+
+  </script>
+
+
+
+</head>
+
+<body>
+
+
+  <div id="logo">
+    <img src="imagens/logo2.png" style="width: 300px;">
+    <div class="esp"></div>
+  </div>
+
+
+
+
+  <br>
+  <div id="movimento">
+    <div id="pes">
+      <h1> ÁREA DE PESQUISA!</h1>
+      <p>REFERÊNCIA:</p>
+      <input id="pesquisa" type="text" placeholder="Pesquisar...">
+      <br>
+      <button onclick="Consultar()" class="button">BUSCAR</button>
+    </div>
+    <br>
+
+
+
+    <div id="modal"
+      style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5);">
+      <div style="position:relative; margin:15% auto; padding:20px; background:white; width:300px; text-align:center;">
+        <span id="close" style="cursor:pointer; position:absolute; top:10px; right:10px;">&times;</span>
+        <h2>Foto Palete</h2>
+        <img id="imagemProduto" src="" alt="Foto Palete" style="max-width: 100%;" />
+        <p id="mensagemProduto"></p>
+      </div>
+    </div>
+
+
+
+
+
+
+    <br>
+    <div id="cadastro">
+      <h1>CADASTRAR PRODUTO!</h1>
+      <p>REFERÊNCIA:</p>
+      <input id="referencia" type="text" placeholder="Artigo...">
+      <br>
+      <p>AMARRAÇÃO:</p>
+      <input id="amarracao" placeholder="EX:10">
+      <br>
+      <p>CAMADAS:</p>
+      <input id="camadas" placeholder="EX:6">
+      <br>
+      <p> IMG EXEMPLO: </p>
+      <input id="foto" type="file"> </input>
+      <br>
+      <button class="button" onclick="Enviar()"> ENVIAR </button>
+    </div>
+
+
+
+  </div>
+
+    
+    
+    
+</body>
+
+</html>
