@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Login</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Freeman&display=swap" rel="stylesheet">
+
+    <script>
+        
+        function Logar() {
+           
+            const info = {
+                'usuario': document.getElementById('usuario').value,
+                'senha': document.getElementById('senha').value
+            }
+
+            const config = {
+
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(info)
+
+            }
+
+            {
+                fetch('/validarlogin', config)
+                    .then(response => response.text())
+                    .then(resposta => {
+                        window.location.href = resposta;
+                    })
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+</head>
+
+<style>
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 100vh;
+        width: 100%;
+
+        background-image: url('imagens/logisticlogo.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        font-family: "Freeman", sans-serif;
+    }
+
+    #principal {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 550px;
+        height: 620px;
+
+        background-color: #126297f0;
+        color: white;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    #entrar {
+        background-color: white;
+
+        font-family: "Freeman", sans-serif;
+
+        border-radius: 3px;
+        border: 0px solid;
+    }
+
+    #usuario {
+        border-radius: 3px;
+        background-color: white;
+
+        border: 0px solid;
+
+        width: 300px;
+        height: 30px;
+    }
+
+    #senha {
+        border-radius: 3px;
+
+        background-color: white;
+
+        border: 0px solid;
+
+        width: 300px;
+        height: 30px;
+    }
+
+    a {
+        color: #e84249;
+    }
+
+    #logar {
+        background-color: white;
+        font-family: "Freeman", sans-serif;
+
+        border-radius: 3px;
+        border: 0px solid;
+
+        width: 90px;
+        height: 35px;
+        font-size: 20px;
+
+        box-shadow: 0px 0px 10px 1px #858585;
+    }
+
+    #borapracima {
+        font-size: 40px;
+    }
+
+    .vapor {
+        font-size: 25px;
+    }
+
+    input{
+        padding: 3px;
+        font-size: 15px;
+    }
+
+</style>
+
+
+<body>
+
+    <div id="principal">
+        <h1 id="borapracima">Faça seu login</h1>
+
+        <p class="vapor">Usuário:</p>
+        <input type="email" id="usuario" placeholder="Digite seu usuario...">
+
+        <p class="vapor">Senha:</p>
+        <input type="password" id="senha" placeholder="Digite sua senha...">
+        <br>
+        <button id="logar" onclick="Logar()">Entrar</button>
+        <br>
+    </div>
+
+</body>
+
+</html>

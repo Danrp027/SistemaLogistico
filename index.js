@@ -32,7 +32,7 @@ function Criar_tabela() {
 
 
 
-Criar_tabela()
+//Criar_tabela()
 
 
 
